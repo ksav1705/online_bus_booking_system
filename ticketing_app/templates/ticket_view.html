@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden mt-8">
+    
+    <div class="bg-green-500 text-white p-4 text-center">
+        <h2 class="text-2xl font-bold">Booking Confirmed!</h2>
+        <p>Your ticket has been successfully generated.</p>
+    </div>
+
+    <div class="p-8">
+        <div class="flex justify-between border-b pb-6 mb-6">
+            <div>
+                <p class="text-sm text-gray-500">PNR Number</p>
+                <p class="text-2xl font-bold tracking-widest text-blue-700">{{ ticket.pnr_no }}</p>
+            </div>
+            <div class="text-right">
+                <p class="text-sm text-gray-500">Booking Status</p>
+                <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full font-semibold text-sm">
+                    {{ ticket.payment_status }}
+                </span>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-6 mb-6">
+            <div>
+                <p class="text-sm text-gray-500">Passenger Name</p>
+                <p class="font-semibold">{{ ticket.user.get_full_name|default:ticket.user.username }}</p>
+            </div>
+            <div>
+                <p class="text-sm text-gray-500">Bus Details</p>
+                <p class="font-semibold">{{ ticket.schedule.bus.registration_no }} ({{ ticket.schedule.bus.get_bus_type_display }})</p>
+            </div>
+            <div>
+                <p class="text-sm text-gray-500">Route</p>
+                <p class="font-semibold">{{ ticket.schedule.route.source_city }} to {{ ticket.schedule.route.destination_city }}</p>
+            </div>
+            <div>
+                <p class="text-sm text-gray-500">Departure Time</p>
+                <p class="font-semibold">{{ ticket.schedule.departure_time|date:"F d, Y H:i" }}</p>
+            </div>
+            <div>
+                <p class="text-sm text-gray-500">Seat Numbers</p>
+                <p class="font-bold text-lg">{{ ticket.seat_numbers }}</p>
+            </div>
+            <div>
+                <p class="text-sm text-gray-500">Total Amount Paid</p>
+                <p class="font-bold text-lg text-green-600">₹{{ ticket.total_amount }}</p>
+            </div>
+        </div>
+
+        <div class="text-center mt-8">
+            <button onclick="window.print()" class="bg-gray-800 text-white py-2 px-6 rounded hover:bg-gray-900">
+                Print E-Ticket
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}

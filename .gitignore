@@ -1,0 +1,21 @@
+# Bytecode & Caches
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Local SQLite Database
+*.sqlite3
+db.sqlite3
+
+# Environment files & Secrets
+.env
+local_settings.py
+
+# Virtual Environments
+venv/
+.venv/
+env/
+
+# Static collection & Media uploads
+staticfiles/
+media/

@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden mt-10">
+    <div class="bg-blue-600 text-white p-6">
+        <h2 class="text-2xl font-bold">Review Your Journey</h2>
+        <p class="text-blue-100">{{ schedule.route.source_city }} to {{ schedule.route.destination_city }}</p>
+    </div>
+
+    <div class="p-8">
+        {% if error %}
+        <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6">
+            {{ error }}
+        </div>
+        {% endif %}
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+            <div>
+                <h3 class="text-lg font-semibold border-b pb-2 mb-4">Bus Details</h3>
+                <p class="text-gray-700"><strong>Bus No:</strong> {{ schedule.bus.registration_no }}</p>
+                <p class="text-gray-700"><strong>Type:</strong> {{ schedule.bus.get_bus_type_display }}</p>
+                <p class="text-gray-700"><strong>Departure:</strong> {{ schedule.departure_time|date:"H:i" }}</p>
+                <p class="text-gray-700"><strong>Fare per Seat:</strong> ₹{{ schedule.base_fare }}</p>
+            </div>
+
+            <div>
+                <h3 class="text-lg font-semibold border-b pb-2 mb-4">Select Seats</h3>
+                <form method="POST" action="{% url 'book_seat' schedule.schedule_id %}">
+                    {% csrf_token %}
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700">Enter Seat Numbers (comma separated)</label>
+                        <input type="text" name="selected_seats" required placeholder="e.g. 12, 13" 
+                               class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+                        <p class="text-xs text-gray-500 mt-1">Available capacity: {{ schedule.bus.total_capacity }}</p>
+                    </div>
+
+                    <div class="bg-gray-50 p-4 rounded-md mb-6">
+                        <p class="text-sm text-gray-600">Total amount will be calculated at next step.</p>
+                    </div>
+
+                    <button type="submit" class="w-full bg-green-600 text-white font-bold py-3 px-4 rounded hover:bg-green-700 transition">
+                        Confirm and Book Ticket
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
